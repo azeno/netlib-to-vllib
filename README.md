@@ -32,11 +32,7 @@ Still the patch looks rather messy, good time for a first cleanup before we move
 ## Turning a C# class into a process node
 As it should already become clear of the placed `Cache` regions, those areas make nice new nodes like `MeshReader`, `MarchingCubes` etc. Wrapping a C# class in a process node and producing a new instance whenever one of its inputs change leads to a very predictable behaviour and already feels nice to patch with. Chaining nodes built like this we can be sure that all downstream nodes will react to an upstream change accordingly, because each of the nodes produces of a new instance on change. The change check itself is super cheap, it's just a pointer comparison.
 
-To quickly check whether or not a value changes look at the little circle in the tooltip. It's empty if the value stays the same, it's lights up if the value changes. In other words when it lights up, a `Cache` region will also trigger.
-
-
-
-
+To quickly check whether or not a value changes look at the little circle in the tooltip. It's empty if the value stays the same, it lights up if the value changes. In other words when it lights up, a `Cache` region will also trigger.
 
 ## C# as an interop layer
 When wrapping a library there can be cases where we're either forced to use C# due to some language limitations of VL or we want to use C# simply because it's the better tool for the job at hand.
@@ -60,3 +56,10 @@ In the node browser we should now see a node called `ToStrideMesh`. We can alrea
 - Unmanaged pointers are not supported at all. Nodes with such pins will show up as `No type` and they'll not be included in the target code.
 - The `Delegate` region only supports `System.Action<...>` and `System.Func<...>`. If the library takes any other kind of delegate one will need to write a wrapper method.
 - `Enums` can't be defined yet in VL. C# helper project as workaround.
+
+## Observables
+- Events get exposed as IObservable
+- Tasks should also be wrapped in IObservable
+
+## Packaging
+Thanks to sebescudie I can simply redirect you to our official documentation for this: https://thegraybook.vvvv.org/reference/libraries/publishing.html
